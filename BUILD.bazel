@@ -1,0 +1,26 @@
+load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_push")
+
+container_image(
+    name = "catvton_docker_image",
+    base = "nvidia/cuda:11.2.0-base",
+    files = [
+        "Dockerfile",
+        "entrypoint.sh",
+        "main.py",
+        "README.md",
+        "custom_nodes",
+        "docker-compose.yml",
+        "models",
+        "workflows",
+    ],
+    cmd = ["python", "-u", "/comfyui/main.py", "--listen", "--port", "8188", "--cuda", "--force-fp32", "--disable-xformers", "--force-channels-last"],
+    visibility = ["//visibility:public"],
+)
+
+container_push(
+    name = "push_catvton_docker_image",
+    image = ":catvton_docker_image",
+    registry = "index.docker.io",
+    repository = "saipranathi78/catvton-docker",
+    tag = "latest",
+)

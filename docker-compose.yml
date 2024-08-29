@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  catvton_comfyui:
+    build: .
+    container_name: catvton_comfyui
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./models:/comfyui/models          # Mount the local models directory to the container
+      - ./workflows:/comfyui/workflows    # Mount the local workflows directory to the container
+      - ./custom_nodes:/comfyui/custom_nodes # Mount the local custom_nodes directory to the container
+    stop_signal: SIGKILL
+    tty: true
